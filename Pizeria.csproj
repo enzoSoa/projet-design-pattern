@@ -42,7 +42,9 @@
     </ItemGroup>
     <ItemGroup>
         <Compile Include="Ingredient.cs" />
+        <Compile Include="Command.cs" />
         <Compile Include="Pizza.cs" />
+        <Compile Include="PizzaCommand.cs" />
         <Compile Include="PizzaIngredient.cs" />
         <Compile Include="PizzaRepository.cs" />
         <Compile Include="Program.cs" />

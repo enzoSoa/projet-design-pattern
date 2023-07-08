@@ -7,36 +7,27 @@ namespace Pizeria
 	{
 		public static void Main(string[] args)
 		{
-			Reader reader = new Reader();
-			Writer writer = new Writer();
 			PizzaRepository pizzas = new PizzaRepository();
-			Dictionary<Pizza, int> command = new Dictionary<Pizza, int>();
-			bool commandIsValid;
+			Writer writer = new Writer();
 			while (true)
 			{
-				commandIsValid = true;
-				command.Clear();
-				Dictionary<string, int>? commandString = reader.readCommand();
-				if (commandString == null)
+				Command.Builder commandBuilder = new Command.Builder(pizzas);
+				var pizzaCommands = Reader.ReadCommands();
+				if (pizzaCommands == null)
 				{
 					continue;
 				}
-				foreach (var pair in commandString)
+				pizzaCommands.ForEach(pizzaCommand =>
 				{
-					var pizza = pizzas.get(pair.Key);
-					if (pizza == null)
-					{
-						commandIsValid = false;
-						Console.Error.WriteLine("La pizza \"{0}\" n'existe pas", pair.Key);
-						break;
-					}
-					command.Add(pizza, pair.Value);
-				}
-				if (commandIsValid)
+					commandBuilder.AddPizza(pizzaCommand.name, pizzaCommand.quantity);
+				});
+				Command? command = commandBuilder.Build();
+				if (command == null)
 				{
-					writer.WriteInvoice(command);
-					writer.WritePreparation(command);
+					continue;
 				}
+				writer.Write(command.ToInvoice());
+				writer.Write(command.ToPreparation());
 			}
 		}
 	}
