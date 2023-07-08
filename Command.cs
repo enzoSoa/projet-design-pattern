@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Pizeria
@@ -23,6 +24,40 @@ namespace Pizeria
 			}
 
 			builder.AppendLine();
+			return builder.ToString();
+		}
+
+		public string ToIngredientsList()
+		{
+			Dictionary<Ingredient, List<Tuple<string, string>>> list = new Dictionary<Ingredient, List<Tuple<string, string>>>();
+			foreach (var pair in _command)
+			{
+				foreach (var ingredient in pair.Key.Ingredients)
+				{
+					for (int i = 0; i < pair.Value; i++)
+					{
+						if (!list.ContainsKey(ingredient.Ingredient))
+						{
+							list.Add(ingredient.Ingredient, new List<Tuple<string, string>>());
+
+						}
+
+						list[ingredient.Ingredient].Add(new Tuple<string, string>(pair.Key.name, ingredient.Quantity));
+					}
+				}
+			}
+
+			StringBuilder builder = new StringBuilder();
+			foreach (var pair in list)
+			{
+				builder.Append($"{pair.Key} : ");
+				builder.AppendLine(String.Join(" + ", pair.Value.ConvertAll(tuple => tuple.Item2)));
+				pair.Value.ConvertAll(tuple => $" - {tuple.Item1} : {tuple.Item2}").ForEach(s =>
+				{
+					builder.AppendLine(s);
+				});
+			}
+
 			return builder.ToString();
 		}
 

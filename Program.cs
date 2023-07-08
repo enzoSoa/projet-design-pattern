@@ -26,6 +26,7 @@ namespace Pizeria
 				{
 					continue;
 				}
+				writer.Write(command.ToIngredientsList());
 				writer.Write(command.ToInvoice());
 				writer.Write(command.ToPreparation());
 			}
