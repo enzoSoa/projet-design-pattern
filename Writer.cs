@@ -10,7 +10,7 @@ namespace Pizeria
 		{
 			foreach (var pair in command)
 			{
-				Console.Out.WriteLine("{0} {1} : {0} * {2},{3}", pair.Value, pair.Key.name, pair.Key.price / 100, pair.Key.price % 100);
+				Console.Out.WriteLine("{0} {1} : {0} * {2},{3}€", pair.Value, pair.Key.name, pair.Key.price / 100, pair.Key.price % 100);
 				pair.Key.Ingredients.ForEach(ingredient => Console.Out.WriteLine($"{ingredient.Ingredient} {ingredient.Quantity}"));
 			}
 			Console.Out.WriteLine();
