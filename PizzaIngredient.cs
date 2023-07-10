@@ -2,7 +2,7 @@ namespace Pizeria
 {
 	public record PizzaIngredient
 	{
-		public Ingredient Ingredient { get; set; }
-		public string Quantity { get; set; }
+		public Ingredient Ingredient { get; init; }
+		public Quantity Quantity { get; init; }
 	}
 }
