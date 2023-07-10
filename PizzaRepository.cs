@@ -10,12 +10,12 @@ namespace Pizeria
 			{
 				Ingredients = new List<PizzaIngredient>
 				{
-					new PizzaIngredient { Ingredient = Ingredient.TOMATO, Quantity = "150g" },
-					new PizzaIngredient { Ingredient = Ingredient.MOZARELLA, Quantity = "125g" },
-					new PizzaIngredient { Ingredient = Ingredient.CHEESE, Quantity = "100g" },
-					new PizzaIngredient { Ingredient = Ingredient.HAM, Quantity = "2 tranches" },
-					new PizzaIngredient { Ingredient = Ingredient.MUSHROOM, Quantity = "4" },
-					new PizzaIngredient { Ingredient = Ingredient.OLIVE_OIL, Quantity = "2 cuillères à soupe" }
+					new PizzaIngredient { Ingredient = Ingredient.TOMATO, Quantity = new Quantity { quantity = 150, unit = "g"} },
+					new PizzaIngredient { Ingredient = Ingredient.MOZARELLA, Quantity = new Quantity { quantity = 125, unit = "g"} },
+					new PizzaIngredient { Ingredient = Ingredient.CHEESE, Quantity = new Quantity { quantity = 100, unit = "g"} },
+					new PizzaIngredient { Ingredient = Ingredient.HAM, Quantity = new Quantity { quantity = 2, unit = "tranches"} },
+					new PizzaIngredient { Ingredient = Ingredient.MUSHROOM, Quantity = new Quantity { quantity = 4, unit = "unit"} },
+					new PizzaIngredient { Ingredient = Ingredient.OLIVE_OIL, Quantity = new Quantity { quantity = 2, unit = "cuillères à soupe"} }
 				},
 				price = 800,
 				name = "Regina"
@@ -24,12 +24,12 @@ namespace Pizeria
 			{
 				Ingredients = new List<PizzaIngredient>
 				{
-					new PizzaIngredient { Ingredient = Ingredient.TOMATO, Quantity = "150g" },
-					new PizzaIngredient { Ingredient = Ingredient.MOZARELLA, Quantity = "125g" },
-					new PizzaIngredient { Ingredient = Ingredient.HAM, Quantity = "2 tranches" },
-					new PizzaIngredient { Ingredient = Ingredient.MUSHROOM, Quantity = "100g" },
-					new PizzaIngredient { Ingredient = Ingredient.RED_PEPPER, Quantity = "0,5" },
-					new PizzaIngredient { Ingredient = Ingredient.OLIVE, Quantity = "1 poignée" }
+					new PizzaIngredient { Ingredient = Ingredient.TOMATO, Quantity = new Quantity { quantity = 150, unit = "g"} },
+					new PizzaIngredient { Ingredient = Ingredient.MOZARELLA, Quantity = new Quantity { quantity = 125, unit = "g"} },
+					new PizzaIngredient { Ingredient = Ingredient.HAM, Quantity = new Quantity { quantity = 2, unit = "tranches"} },
+					new PizzaIngredient { Ingredient = Ingredient.MUSHROOM, Quantity = new Quantity { quantity = 125, unit = "g"} },
+					new PizzaIngredient { Ingredient = Ingredient.RED_PEPPER, Quantity = new Quantity { quantity = 0.5, unit = "unit"} },
+					new PizzaIngredient { Ingredient = Ingredient.OLIVE, Quantity = new Quantity { quantity = 1, unit = "poigné"} }
 				},
 				price = 900,
 				name = "4 saisons"
@@ -38,12 +38,12 @@ namespace Pizeria
 			{
 				Ingredients = new List<PizzaIngredient>
 				{
-					new PizzaIngredient { Ingredient = Ingredient.TOMATO, Quantity = "150g" },
-					new PizzaIngredient { Ingredient = Ingredient.MOZARELLA, Quantity = "100g" },
-					new PizzaIngredient { Ingredient = Ingredient.ZUCCHINI, Quantity = "0,5" },
-					new PizzaIngredient { Ingredient = Ingredient.YELLOW_PEPPER, Quantity = "1" },
-					new PizzaIngredient { Ingredient = Ingredient.CHERRY_TOMATO, Quantity = "6" },
-					new PizzaIngredient { Ingredient = Ingredient.OLIVE, Quantity = "quelques" },
+					new PizzaIngredient { Ingredient = Ingredient.TOMATO, Quantity = new Quantity { quantity = 150, unit = "g"} },
+					new PizzaIngredient { Ingredient = Ingredient.MOZARELLA, Quantity = new Quantity { quantity = 100, unit = "g"} },
+					new PizzaIngredient { Ingredient = Ingredient.ZUCCHINI, Quantity = new Quantity { quantity = 0.5, unit = "unit"} },
+					new PizzaIngredient { Ingredient = Ingredient.YELLOW_PEPPER, Quantity = new Quantity { quantity = 1, unit = "unit"} },
+					new PizzaIngredient { Ingredient = Ingredient.CHERRY_TOMATO, Quantity = new Quantity { quantity = 6, unit = "unit"} },
+					new PizzaIngredient { Ingredient = Ingredient.OLIVE, Quantity = new Quantity { quantity = 1, unit = "quelques"} },
 				},
 				price = 750,
 				name = "Végétarienne"

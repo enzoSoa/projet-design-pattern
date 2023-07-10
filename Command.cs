@@ -16,11 +16,11 @@ namespace Pizeria
 
 		public string ToInvoice()
 		{
-			var builder = new StringBuilder(); 
+			var builder = new StringBuilder();
 			foreach (var pair in _command)
 			{
 				builder.AppendFormat("{0} {1} : {0} * {2},{3}€\n", pair.Value, pair.Key.name, pair.Key.price / 100, pair.Key.price % 100);
-				pair.Key.Ingredients.ForEach(ingredient => builder.AppendLine($"{ingredient.Ingredient} {ingredient.Quantity}"));
+				pair.Key.Ingredients.ForEach(ingredient => builder.AppendLine($"{ingredient.Ingredient} {ingredient.Quantity.quantity} {ingredient.Quantity.unit}"));
 			}
 
 			builder.AppendLine();
@@ -29,7 +29,7 @@ namespace Pizeria
 
 		public string ToIngredientsList()
 		{
-			Dictionary<Ingredient, List<Tuple<string, string>>> list = new Dictionary<Ingredient, List<Tuple<string, string>>>();
+			Dictionary<Ingredient, List<Tuple<string, Quantity>>> list = new Dictionary<Ingredient, List<Tuple<string, Quantity>>>();
 			foreach (var pair in _command)
 			{
 				foreach (var ingredient in pair.Key.Ingredients)
@@ -38,11 +38,11 @@ namespace Pizeria
 					{
 						if (!list.ContainsKey(ingredient.Ingredient))
 						{
-							list.Add(ingredient.Ingredient, new List<Tuple<string, string>>());
+							list.Add(ingredient.Ingredient, new List<Tuple<string, Quantity>>());
 
 						}
 
-						list[ingredient.Ingredient].Add(new Tuple<string, string>(pair.Key.name, ingredient.Quantity));
+						list[ingredient.Ingredient].Add(new Tuple<string, Quantity>(pair.Key.name, ingredient.Quantity));
 					}
 				}
 			}
@@ -51,8 +51,24 @@ namespace Pizeria
 			foreach (var pair in list)
 			{
 				builder.Append($"{pair.Key} : ");
-				builder.AppendLine(String.Join(" + ", pair.Value.ConvertAll(tuple => tuple.Item2)));
-				pair.Value.ConvertAll(tuple => $" - {tuple.Item1} : {tuple.Item2}").ForEach(s =>
+				builder.AppendLine(string.Join(" + ", pair.Value.Aggregate(new List<Quantity>(), (quantities, tuple) =>
+				{
+					var index = quantities.FindIndex(v => v.unit == tuple.Item2.unit);
+					if (index == -1)
+					{
+						quantities.Add(new Quantity { unit = tuple.Item2.unit, quantity = tuple.Item2.quantity });
+					}
+					else
+					{
+						quantities[index].quantity += tuple.Item2.quantity;
+					}
+
+					return quantities;
+				}).ConvertAll(q =>
+				{
+					return $"{q.quantity} {q.unit}";
+				})));
+				pair.Value.ConvertAll(tuple => $" - {tuple.Item1} : {tuple.Item2.quantity} {tuple.Item2.unit}").ForEach(s =>
 				{
 					builder.AppendLine(s);
 				});
