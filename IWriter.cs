@@ -4,11 +4,8 @@ using System.Data;
 
 namespace Pizeria
 {
-	public class Writer
+	public interface IWriter
 	{
-		public void Write(string s)
-		{
-			Console.Out.Write(s);
-		}
+		public void Write(string s);
 	}
 }

@@ -5,11 +5,22 @@ using System.Linq;
 
 namespace Pizeria
 {
-	public class Reader
+	public class ProxyReader: IReader
 	{
-		public static List<PizzaCommand>? ReadCommands()
+		public string? Read()
 		{
-			string? s = Console.In.ReadLine();
+			return _reader.Read();
+		}
+		
+		private IReader _reader;
+		
+		public ProxyReader(IReader reader)
+		{
+			_reader = reader;
+		} 
+		public List<PizzaCommand>? ReadCommands()
+		{
+			string? s = Read();
 			if (s != null)
 			{
 				try

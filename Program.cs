@@ -9,11 +9,12 @@ namespace Pizeria
 		public static void Main(string[] args)
 		{
 			PizzaRepository pizzas = new PizzaRepository();
-			Writer writer = new Writer();
+			ProxyWriter writer = new ProxyWriter(new ConsoleWriter());
+			ProxyReader reader = new ProxyReader(new ConsoleReader());
 			while (true)
 			{
 				Command.Builder commandBuilder = new Command.Builder(pizzas);
-				var pizzaCommands = Reader.ReadCommands();
+				var pizzaCommands = reader.ReadCommands();
 				if (pizzaCommands == null)
 				{
 					continue;
