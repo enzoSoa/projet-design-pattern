@@ -1,5 +1,3 @@
-using System;
-
 namespace Pizeria
 {
 	public enum Ingredient

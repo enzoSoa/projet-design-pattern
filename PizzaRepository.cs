@@ -74,11 +74,6 @@ namespace Pizeria
 			},
 		};
 
-		public List<Pizza> getAll()
-		{
-			return pizzas;
-		}
-
 		public Pizza? Get(string name)
 		{
 			return pizzas.Find(pizza => pizza.name.Equals(name));

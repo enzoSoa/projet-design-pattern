@@ -92,7 +92,7 @@
         <Compile Include="Quantity.cs" />
         <Compile Include="ProxyReader.cs" />
         <Compile Include="Reader.cs" />
-        <Compile Include="IWriter.cs" />
+        <Compile Include="Writer.cs" />
     </ItemGroup>
     <ItemGroup>
       <Content Include=".gitignore" />
