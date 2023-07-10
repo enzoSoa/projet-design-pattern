@@ -4,6 +4,30 @@ namespace Pizeria
 {
 	public class PizzaRepository
 	{
+		private static PizzaRepository? _instance = null;
+		private static object _instanceLock = new object();
+		
+		private PizzaRepository(){ }
+		
+		public static PizzaRepository Instance
+		{
+			get
+			{
+				if (_instance == null)
+				{
+					lock (_instanceLock)
+					{
+						if (_instance == null)
+						{
+							_instance = new PizzaRepository();
+						}
+					}
+				}
+
+				return _instance;
+			}
+		}
+		
 		private List<Pizza> pizzas = new List<Pizza>
 		{
 			new Pizza
@@ -55,7 +79,7 @@ namespace Pizeria
 			return pizzas;
 		}
 
-		public Pizza? get(string name)
+		public Pizza? Get(string name)
 		{
 			return pizzas.Find(pizza => pizza.name.Equals(name));
 		}

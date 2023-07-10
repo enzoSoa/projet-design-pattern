@@ -125,7 +125,7 @@ namespace Pizeria
 				Dictionary<Pizza, int> commandPizza = new Dictionary<Pizza, int>();
 				foreach (var pair in _command)
 				{
-					var pizza = _pizzas.get(pair.Key);
+					var pizza = _pizzas.Get(pair.Key);
 					if (pizza == null)
 					{
 						Console.Error.WriteLine("La pizza \"{0}\" n'existe pas", pair.Key);

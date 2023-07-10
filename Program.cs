@@ -29,7 +29,7 @@ namespace Pizeria
 				}}
 			};
 			p.Parse(args);
-			PizzaRepository pizzas = new PizzaRepository();
+			PizzaRepository pizzas = PizzaRepository.Instance;
 			ProxyWriter writer;
 			ProxyReader reader;
 			ConsoleWriter consoleWriter = new ConsoleWriter(Format.TEXT);
