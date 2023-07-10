@@ -14,17 +14,20 @@ namespace Pizeria
 			_command = command;
 		}
 
-		public string ToInvoice()
+		public Invoice ToInvoice()
 		{
-			var builder = new StringBuilder();
+			var list = new List<InvoicePizza>();
 			foreach (var pair in _command)
 			{
-				builder.AppendFormat("{0} {1} : {0} * {2},{3}€\n", pair.Value, pair.Key.name, pair.Key.price / 100, pair.Key.price % 100);
-				pair.Key.Ingredients.ForEach(ingredient => builder.AppendLine($"{ingredient.Ingredient} {ingredient.Quantity.quantity} {ingredient.Quantity.unit}"));
+				list.Add(new InvoicePizza
+				{
+					quantity = pair.Value,
+					name = pair.Key.name,
+					Ingredients = pair.Key.Ingredients,
+					price = pair.Key.price
+				});
 			}
-
-			builder.AppendLine();
-			return builder.ToString();
+			return new Invoice(list);
 		}
 
 		public string ToIngredientsList()

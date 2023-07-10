@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text.Json;
 using Mono.Options;
 
 namespace Pizeria
@@ -9,6 +10,7 @@ namespace Pizeria
 		public static void Main(string[] args)
 		{
 			string file = "-";
+			string output = "-";
 			Format format = Format.TEXT;
 			var p = new OptionSet()
 			{
@@ -20,12 +22,17 @@ namespace Pizeria
 							s == "XML" ? Format.XML :
 							s == "TEXT" ? Format.TEXT : throw new OptionException("Invalid value", "format");
 					}
-				}
+				},
+				{"o|output=", "The file to output data", s =>
+				{
+					output = s;
+				}}
 			};
 			p.Parse(args);
 			PizzaRepository pizzas = new PizzaRepository();
-			ProxyWriter writer = new ProxyWriter(new ConsoleWriter());
+			ProxyWriter writer;
 			ProxyReader reader;
+			ConsoleWriter consoleWriter = new ConsoleWriter(Format.TEXT);
 			if (file != "-")
 			{
 				reader = new ProxyReader(new FileReader(file, format));
@@ -33,6 +40,15 @@ namespace Pizeria
 			else
 			{
 				reader = new ProxyReader(new ConsoleReader());
+			}
+
+			if (output != "-")
+			{
+				writer = new ProxyWriter(new FileWriter(output));
+			}
+			else
+			{
+				writer = new ProxyWriter(new ConsoleWriter(format));
 			}
 			while (true)
 			{
@@ -51,9 +67,9 @@ namespace Pizeria
 				{
 					continue;
 				}
-				writer.Write(command.ToIngredientsList());
+				consoleWriter.Write(command.ToIngredientsList());
 				writer.Write(command.ToInvoice());
-				writer.Write(command.ToPreparation());
+				consoleWriter.Write(command.ToPreparation());
 			}
 		}
 	}

@@ -76,9 +76,12 @@
         <Compile Include="ConsoleReader.cs" />
         <Compile Include="ConsoleWriter.cs" />
         <Compile Include="FileReader.cs" />
+        <Compile Include="FileWriter.cs" />
         <Compile Include="Format.cs" />
         <Compile Include="Ingredient.cs" />
         <Compile Include="Command.cs" />
+        <Compile Include="Invoice.cs" />
+        <Compile Include="InvoicePizza.cs" />
         <Compile Include="Pizza.cs" />
         <Compile Include="PizzaCommand.cs" />
         <Compile Include="PizzaIngredient.cs" />
@@ -88,7 +91,7 @@
         <Compile Include="ProxyWriter.cs" />
         <Compile Include="Quantity.cs" />
         <Compile Include="ProxyReader.cs" />
-        <Compile Include="IReader.cs" />
+        <Compile Include="Reader.cs" />
         <Compile Include="IWriter.cs" />
     </ItemGroup>
     <ItemGroup>

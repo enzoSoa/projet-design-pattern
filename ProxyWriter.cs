@@ -1,17 +1,17 @@
 namespace Pizeria
 {
-	public class ProxyWriter: IWriter
+	public class ProxyWriter: Writer
 	{
-		private IWriter _writer;
+		private Writer _writer;
 		
-		public ProxyWriter(IWriter writer)
+		public ProxyWriter(Writer writer)
 		{
 			_writer = writer;
 		}
 
-		public void Write(string s)
+		public override void Write<T>(T toWrite)
 		{
-			_writer.Write(s);
+			_writer.Write(toWrite);
 		}
 	}
 }
