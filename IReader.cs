@@ -1,7 +1,18 @@
+using System.Collections.Generic;
+
 namespace Pizeria
 {
-	public interface IReader
+	public abstract class Reader
 	{
-		public string? Read();
+		protected Format _format = Format.TEXT;
+
+		public Reader(){}
+
+		public Reader(Format format)
+		{
+			_format = format;
+		}
+		
+		public abstract List<PizzaCommand>? Read();
 	}
 }

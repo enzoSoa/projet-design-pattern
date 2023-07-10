@@ -1,0 +1,5 @@
+<PizzaCommands>
+    <Command>
+        <PizzaCommand name="Regina" quantity="2"/>
+    </Command>
+</PizzaCommands>
