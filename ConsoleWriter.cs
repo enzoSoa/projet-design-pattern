@@ -11,7 +11,7 @@ namespace Pizeria
 
 		public ConsoleWriter(Format format)
 		{
-			_format = format;
+			Format = format;
 		}
 
 		public override void Write<T>(T toWrite)
@@ -21,15 +21,15 @@ namespace Pizeria
 				return;
 			}
 
-			if (_format == Format.TEXT)
+			if (Format == Format.TEXT)
 			{
 				Console.Out.WriteLine(toWrite.ToString());
 			} 
-			else if (_format == Format.JSON)
+			else if (Format == Format.JSON)
 			{
 				Console.Out.WriteLine(JsonSerializer.Serialize(toWrite));
 			}
-			else if(_format == Format.XML)
+			else if(Format == Format.XML)
 			{
 				new XmlSerializer(typeof(T)).Serialize(new XmlTextWriter(Console.OpenStandardOutput(), Encoding.UTF8), toWrite);
 			}

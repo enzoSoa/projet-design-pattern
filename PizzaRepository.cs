@@ -1,82 +1,61 @@
+using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Text.Json;
 
 namespace Pizeria
 {
 	public class PizzaRepository
 	{
-		private static PizzaRepository? _instance = null;
-		private static object _instanceLock = new object();
+		private static readonly string File = "./pizza.json";
 		
-		private PizzaRepository(){ }
-		
-		public static PizzaRepository Instance
-		{
-			get
-			{
-				if (_instance == null)
-				{
-					lock (_instanceLock)
-					{
-						if (_instance == null)
-						{
-							_instance = new PizzaRepository();
-						}
-					}
-				}
+		private static Lazy<PizzaRepository> _lazy = new Lazy<PizzaRepository>(() => new PizzaRepository());
 
-				return _instance;
+		private PizzaRepository()
+		{
+			var tmp = JsonSerializer.Deserialize<List<PizzaEntity>>(System.IO.File.ReadAllText(File, Encoding.UTF8));
+			if (tmp != null)
+			{
+				_pizzas = tmp.ConvertAll(v =>
+				{
+					return new Pizza
+					{
+						Ingredients = v.ingredients.ConvertAll(v => new PizzaIngredient
+							{ Ingredient = Ingredients.Find(v.name)!, Quantity = v.Quantity }),
+						name = v.name,
+						price = v.price,
+						Type = v.Type
+					};
+				});
+			}
+			else
+			{
+				_pizzas = new List<Pizza>();
 			}
 		}
 		
-		private List<Pizza> pizzas = new List<Pizza>
-		{
-			new Pizza
-			{
-				Ingredients = new List<PizzaIngredient>
-				{
-					new PizzaIngredient { Ingredient = Ingredient.TOMATO, Quantity = new Quantity { quantity = 150, unit = "g"} },
-					new PizzaIngredient { Ingredient = Ingredient.MOZARELLA, Quantity = new Quantity { quantity = 125, unit = "g"} },
-					new PizzaIngredient { Ingredient = Ingredient.CHEESE, Quantity = new Quantity { quantity = 100, unit = "g"} },
-					new PizzaIngredient { Ingredient = Ingredient.HAM, Quantity = new Quantity { quantity = 2, unit = "tranches"} },
-					new PizzaIngredient { Ingredient = Ingredient.MUSHROOM, Quantity = new Quantity { quantity = 4, unit = "unit"} },
-					new PizzaIngredient { Ingredient = Ingredient.OLIVE_OIL, Quantity = new Quantity { quantity = 2, unit = "cuillères à soupe"} }
-				},
-				price = 800,
-				name = "Regina"
-			},
-			new Pizza
-			{
-				Ingredients = new List<PizzaIngredient>
-				{
-					new PizzaIngredient { Ingredient = Ingredient.TOMATO, Quantity = new Quantity { quantity = 150, unit = "g"} },
-					new PizzaIngredient { Ingredient = Ingredient.MOZARELLA, Quantity = new Quantity { quantity = 125, unit = "g"} },
-					new PizzaIngredient { Ingredient = Ingredient.HAM, Quantity = new Quantity { quantity = 2, unit = "tranches"} },
-					new PizzaIngredient { Ingredient = Ingredient.MUSHROOM, Quantity = new Quantity { quantity = 125, unit = "g"} },
-					new PizzaIngredient { Ingredient = Ingredient.RED_PEPPER, Quantity = new Quantity { quantity = 0.5, unit = "unit"} },
-					new PizzaIngredient { Ingredient = Ingredient.OLIVE, Quantity = new Quantity { quantity = 1, unit = "poigné"} }
-				},
-				price = 900,
-				name = "4 saisons"
-			},
-			new Pizza
-			{
-				Ingredients = new List<PizzaIngredient>
-				{
-					new PizzaIngredient { Ingredient = Ingredient.TOMATO, Quantity = new Quantity { quantity = 150, unit = "g"} },
-					new PizzaIngredient { Ingredient = Ingredient.MOZARELLA, Quantity = new Quantity { quantity = 100, unit = "g"} },
-					new PizzaIngredient { Ingredient = Ingredient.ZUCCHINI, Quantity = new Quantity { quantity = 0.5, unit = "unit"} },
-					new PizzaIngredient { Ingredient = Ingredient.YELLOW_PEPPER, Quantity = new Quantity { quantity = 1, unit = "unit"} },
-					new PizzaIngredient { Ingredient = Ingredient.CHERRY_TOMATO, Quantity = new Quantity { quantity = 6, unit = "unit"} },
-					new PizzaIngredient { Ingredient = Ingredient.OLIVE, Quantity = new Quantity { quantity = 1, unit = "quelques"} },
-				},
-				price = 750,
-				name = "Végétarienne"
-			},
-		};
+		private static readonly IngredientRepository Ingredients = IngredientRepository.Instance;
+
+		public static PizzaRepository Instance = _lazy.Value;
+
+		private List<Pizza> _pizzas;
 
 		public Pizza? Get(string name)
 		{
-			return pizzas.Find(pizza => pizza.name.Equals(name));
+			return _pizzas.Find(pizza => pizza.name.Equals(name));
+		}
+
+		public List<Pizza> GetAll()
+		{
+			return _pizzas;
+		}
+
+		public void Save()
+		{
+			var sw = System.IO.File.CreateText(File);
+			sw.Write(JsonSerializer.Serialize(_pizzas.ConvertAll(v => new PizzaEntity { name = v.name, price = v.price, Type = v.Type, ingredients = v.Ingredients.ConvertAll(i => new PizzaEntityIngredient { name = i.Ingredient.name, Quantity = i.Quantity })})));
+			sw.Flush();
+			sw.Close();
 		}
 	}
 }

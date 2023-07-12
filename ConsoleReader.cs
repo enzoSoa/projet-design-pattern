@@ -44,5 +44,10 @@ namespace Pizeria
 
 			return null;
 		}
+
+		public string? ReadString()
+		{
+			return Console.In.ReadLine();
+		}
 	}
 }

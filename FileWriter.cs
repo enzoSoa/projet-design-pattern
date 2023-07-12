@@ -16,15 +16,15 @@ namespace Pizeria
 		{
 			if (file.EndsWith(".json"))
 			{
-				_format = Format.JSON;
+				Format = Format.JSON;
 			}
 			else if (file.EndsWith(".txt"))
 			{
-				_format = Format.TEXT;
+				Format = Format.TEXT;
 			}
 			else if (file.EndsWith(".xml"))
 			{
-				_format = Format.XML;
+				Format = Format.XML;
 			}
 			else
 			{
@@ -45,17 +45,17 @@ namespace Pizeria
 				return;
 			}
 
-			if (_format == Format.TEXT)
+			if (Format == Format.TEXT)
 			{
 				byte[] array = Encoding.UTF8.GetBytes(toWrite.ToString());
 				_sw.Write(array, 0, array.Length);
 			} 
-			else if (_format == Format.JSON)
+			else if (Format == Format.JSON)
 			{
 				byte[] array = Encoding.UTF8.GetBytes(JsonSerializer.Serialize(toWrite));
 				_sw.Write(array, 0, array.Length);
 			}
-			else if(_format == Format.XML)
+			else if(Format == Format.XML)
 			{
 				new XmlSerializer(typeof(T)).Serialize(new XmlTextWriter(_sw, Encoding.UTF8), toWrite);
 			}

@@ -2,13 +2,13 @@ namespace Pizeria
 {
 	public abstract class Writer
 	{
-		protected Format _format = Format.TEXT;
+		protected Format Format = Format.TEXT;
 
 		public Writer(){}
 
 		public Writer(Format format)
 		{
-			_format = format;
+			Format = format;
 		}
 		
 		public abstract void Write<T>(T toWrite);	
