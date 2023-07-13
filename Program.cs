@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Globalization;
 using Mono.Options;
@@ -350,7 +351,7 @@ namespace Pizeria
 
 										try
 										{
-											var quantity = Double.Parse(quantityString.Split(' ')[0]);
+											var quantity = Double.Parse(quantityString.Split(' ')[0], CultureInfo.InvariantCulture);
 											pizza.Ingredients.Add(new PizzaIngredient
 											{
 												Ingredient = ingredient,
@@ -396,7 +397,7 @@ namespace Pizeria
 
 										try
 										{
-											var quantity = Double.Parse(quantityString.Split(' ')[0]);
+											var quantity = Double.Parse(quantityString.Split(' ')[0], CultureInfo.InvariantCulture);
 											ingredient.Quantity = new Quantity
 											{
 												quantity = quantity,
@@ -440,6 +441,164 @@ namespace Pizeria
 							}
 							break;
 						}
+					}
+					break;
+				}
+				case 2:
+				{
+					string? name;
+					while (true)
+					{
+						consoleWriter.Write("Nom de la pizza :");
+						name = consoleReader.ReadString();
+						if (name == null)
+						{
+							return false;
+						}
+
+						if (PizzaRepository.Instance.Get(name) != null)
+						{
+							consoleWriter.Write("Cette pizza existe déjà");
+							continue;
+						}
+						break;
+					}
+
+					string? typeString;
+					PizzaType type;
+					string? priceString;
+					int price;
+					
+					while (true)
+					{
+						consoleWriter.Write("Type de pizza : [N]ormal/[C]alzone");
+						typeString = consoleReader.ReadString();
+						if (typeString == null)
+						{
+							return false;
+						}
+
+						if (typeString == "N")
+						{
+							type = PizzaType.NORMAL;
+						}
+						else if (typeString == "C")
+						{
+							type = PizzaType.CALZONE;
+						}
+						else
+						{
+							consoleWriter.Write("Le type de pizza est invalide");
+							continue;
+						}
+
+						break;
+					}
+
+					while (true)
+					{
+						consoleWriter.Write("Prix :");
+						priceString = consoleReader.ReadString();
+						if (priceString == null)
+						{
+							return false;
+						}
+
+						try
+						{
+							price = (int)(double.Parse(priceString, CultureInfo.InvariantCulture) * 100);
+						}
+						catch (FormatException _)
+						{
+							consoleWriter.Write("Le prix n'est pas un nombre valide");
+							continue;
+						}
+
+						break;
+					}
+
+					var ingredients = new List<PizzaIngredient>();
+					while (true)
+					{
+						consoleWriter.Write("Nom de l'ingredient (done pour terminer)");
+						var ingredientString = consoleReader.ReadString();
+						if (ingredientString == null)
+						{
+							return false;
+						}
+
+						if (ingredientString == "done")
+						{
+							break;
+						}
+
+						if (ingredients.Find(v => v.Ingredient.name == ingredientString) != null)
+						{
+							consoleWriter.Write("L'ingrédient est déjà dans la liste");
+							continue;
+						}
+
+						var ingredient = IngredientRepository.Instance.Find(ingredientString);
+						if (ingredient == null)
+						{
+							consoleWriter.Write("L'ingrédient n'existe pas");
+							continue;
+						}
+						consoleWriter.Write("Quantité");
+						var quantityString = consoleReader.ReadString();
+						if (quantityString == null)
+						{
+							return false;
+						}
+
+						try
+						{
+							var quantity = Double.Parse(quantityString.Split(' ')[0], CultureInfo.InvariantCulture);
+							ingredients.Add(new PizzaIngredient
+							{
+								Ingredient = ingredient,
+								Quantity = new Quantity
+								{
+									quantity = quantity,
+									unit = quantityString.Split(' ')[1]
+								}
+							});
+							PizzaRepository.Instance.Save();
+						}
+						catch (FormatException _)
+						{
+							consoleWriter.Write("Ce n'est pas un nombre valide");
+						}
+					}
+					PizzaRepository.Instance.Add(new Pizza
+					{
+						name = name,
+						Type = type,
+						price = price,
+						Ingredients = ingredients
+					});
+					break;
+				}
+				case 3:
+				{
+					while (true)
+					{
+						consoleWriter.Write("Nom de la pizza :");
+						var name = consoleReader.ReadString();
+						if (name == null)
+						{
+							return false;
+						}
+
+						var pizza = PizzaRepository.Instance.Get(name);
+						if (pizza == null)
+						{
+							consoleWriter.Write("Cette pizza n'existe pas");
+							continue;
+						}
+
+						PizzaRepository.Instance.Delete(pizza);
+						break;
 					}
 					break;
 				}

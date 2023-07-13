@@ -50,6 +50,18 @@ namespace Pizeria
 			return _pizzas;
 		}
 
+		public void Add(Pizza pizza)
+		{
+			_pizzas.Add(pizza);
+			Save();
+		}
+
+		public void Delete(Pizza pizza)
+		{
+			_pizzas.Remove(pizza);
+			Save();
+		}
+
 		public void Save()
 		{
 			var sw = System.IO.File.CreateText(File);
